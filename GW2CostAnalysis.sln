@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GW2CostAnalysis", "GW2CostAnalysis\GW2CostAnalysis.csproj", "{60FA1574-EBCE-4365-B550-154E91FC024B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60FA1574-EBCE-4365-B550-154E91FC024B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60FA1574-EBCE-4365-B550-154E91FC024B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60FA1574-EBCE-4365-B550-154E91FC024B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60FA1574-EBCE-4365-B550-154E91FC024B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8609EC14-BED3-4465-96D8-14C34E1C2E62}
+	EndGlobalSection
+EndGlobal
