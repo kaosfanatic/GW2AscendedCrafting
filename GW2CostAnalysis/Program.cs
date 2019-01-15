@@ -16,7 +16,13 @@ namespace GW2CostAnalysis
         static bool bStopAtIngotsAndPlanks = true;
         public static string strApi = "https://api.guildwars2.com/v2/";
         static HttpClient client = new HttpClient();
-        public static Item itemTest;
+        public static ApiItem itemTest;
+        public static ApiRecipe recTest;
+        public static Prices priTest;
+
+        public static int[] iIngredientIDs;
+        public static ApiItem[] itmIngredients;
+        public static int iNumIngredients;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -36,11 +42,29 @@ namespace GW2CostAnalysis
         public static async Task RunAsync(int ID)
         {
             //MessageBox.Show("Test");
+            iIngredientIDs = new int[4];
+            itmIngredients = new ApiItem[4];
+            iNumIngredients = 0;
 
             try
             {
-                itemTest = new Item();
+                itemTest = new ApiItem();
                 itemTest = await GetItemAsync(ID).ConfigureAwait(false);
+
+                recTest = new ApiRecipe();
+                recTest = await GetRecipeAsync(ID).ConfigureAwait(false);
+                
+                foreach(ApiIngredient i in recTest.Ingredients)
+                {
+                    iIngredientIDs[iNumIngredients] = i.item_id;
+
+                    itmIngredients[iNumIngredients] = await GetItemAsync(iIngredientIDs[iNumIngredients]).ConfigureAwait(false);
+
+                    iNumIngredients++;
+                }
+
+                priTest = new Prices();
+                priTest = await GetPricesAsync(ID).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -48,28 +72,56 @@ namespace GW2CostAnalysis
             }
         }
 
-        public static async Task<Recipe> GetRecipe(int ID)
+        public static async Task<ApiRecipe> GetRecipeAsync(int ID)
         {
-            //MessageBox.Show("TEST2");
-            ID = 46697;
-            Recipe apiRecipe = null;
-            string strApiPath = Program.strApi;
-            strApiPath = "recipes/search?input=" + ID.ToString();
-
-            //MessageBox.Show(strApiPath);
-            HttpResponseMessage response = await client.GetAsync(strApiPath);
+            ApiRecipe apiRecipe = null;
+            string strApiPath;
+            strApiPath = "recipes/search?output=" + ID.ToString();
+           
+            HttpResponseMessage response = await client.GetAsync(strApiPath).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
-                apiRecipe = await response.Content.ReadAsAsync<Recipe>();
+            {
+                int iRecipeID = -1;
+                string jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
+                IList<int> temp = JsonConvert.DeserializeObject<IList<int>>(jsonString);
+
+                foreach (int i in temp)
+                {
+                    iRecipeID = i;
+                }
+                if (iRecipeID == -1)
+                    return apiRecipe;
+
+                strApiPath = "recipes/" + iRecipeID.ToString();
+            }
+
+            else
+            {
+                MessageBox.Show("Failed to retrieve data from:\n\r" + strApiPath);
+                return apiRecipe;
+            }
+
+            response = await client.GetAsync(strApiPath).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                apiRecipe = JsonConvert.DeserializeObject<ApiRecipe>(jsonString);
+
+            }
+            else
+                MessageBox.Show("Failed to retrieve data from:\n\r" + strApiPath);
 
             return apiRecipe;
         }
 
-        public static async Task<Item> GetItemAsync(int ID)
+        public static async Task<ApiItem> GetItemAsync(int ID)
         {
 
-            Item apiItem = null;
+            ApiItem apiItem = null;
             string strApiPath;
             strApiPath = "items";
             if(ID != -1)
@@ -77,19 +129,51 @@ namespace GW2CostAnalysis
 
             HttpResponseMessage response = await client.GetAsync(strApiPath).ConfigureAwait(false);
 
-            if (response.IsSuccessStatusCode) {
-                string test = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                
-                var item = JsonConvert.DeserializeObject<List<Item>>(test);
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                foreach (Item i in item) {
+                var item = JsonConvert.DeserializeObject<List<ApiItem>>(jsonString);
+
+                foreach (ApiItem i in item)
+                {
                     apiItem = i;
 
                 }
             }
+            else
+                MessageBox.Show("Failed to retrieve data from:\n\r" + strApiPath);
             
 
             return apiItem;
+        }
+
+        public static async Task<Prices> GetPricesAsync(int ID)
+        {
+            Prices prices = null;
+            if (ID == 46699) //Wupwup not tradeable
+                return prices;
+
+            string strApiPath;
+            strApiPath = "commerce/prices/" + ID.ToString();
+
+            HttpResponseMessage response = await client.GetAsync(strApiPath).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                //MessageBox.Show(jsonString);
+
+                var price = JsonConvert.DeserializeObject<Prices>(jsonString);
+
+                prices = price;
+            }
+            else
+                MessageBox.Show("Failed to retrieve data from:\n\r" + strApiPath);
+
+
+            return prices;
         }
     }
 }

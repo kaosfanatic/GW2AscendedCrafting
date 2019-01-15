@@ -39,6 +39,7 @@
             this.lblIngredientCount1 = new System.Windows.Forms.Label();
             this.lblIngredientName4 = new System.Windows.Forms.Label();
             this.btnLoad = new System.Windows.Forms.Button();
+            this.lblRecipeName1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblInstantSell
@@ -84,7 +85,7 @@
             // lblIngredientName1
             // 
             this.lblIngredientName1.AutoSize = true;
-            this.lblIngredientName1.Location = new System.Drawing.Point(19, 180);
+            this.lblIngredientName1.Location = new System.Drawing.Point(12, 131);
             this.lblIngredientName1.Name = "lblIngredientName1";
             this.lblIngredientName1.Size = new System.Drawing.Size(35, 13);
             this.lblIngredientName1.TabIndex = 3;
@@ -93,7 +94,7 @@
             // lblIngredientName2
             // 
             this.lblIngredientName2.AutoSize = true;
-            this.lblIngredientName2.Location = new System.Drawing.Point(19, 227);
+            this.lblIngredientName2.Location = new System.Drawing.Point(12, 178);
             this.lblIngredientName2.Name = "lblIngredientName2";
             this.lblIngredientName2.Size = new System.Drawing.Size(35, 13);
             this.lblIngredientName2.TabIndex = 4;
@@ -102,7 +103,7 @@
             // lblIngredientName3
             // 
             this.lblIngredientName3.AutoSize = true;
-            this.lblIngredientName3.Location = new System.Drawing.Point(19, 278);
+            this.lblIngredientName3.Location = new System.Drawing.Point(12, 229);
             this.lblIngredientName3.Name = "lblIngredientName3";
             this.lblIngredientName3.Size = new System.Drawing.Size(35, 13);
             this.lblIngredientName3.TabIndex = 5;
@@ -111,7 +112,7 @@
             // lblIngredientCount4
             // 
             this.lblIngredientCount4.AutoSize = true;
-            this.lblIngredientCount4.Location = new System.Drawing.Point(207, 333);
+            this.lblIngredientCount4.Location = new System.Drawing.Point(238, 284);
             this.lblIngredientCount4.Name = "lblIngredientCount4";
             this.lblIngredientCount4.Size = new System.Drawing.Size(35, 13);
             this.lblIngredientCount4.TabIndex = 7;
@@ -120,7 +121,7 @@
             // lblIngredientCount3
             // 
             this.lblIngredientCount3.AutoSize = true;
-            this.lblIngredientCount3.Location = new System.Drawing.Point(207, 278);
+            this.lblIngredientCount3.Location = new System.Drawing.Point(238, 229);
             this.lblIngredientCount3.Name = "lblIngredientCount3";
             this.lblIngredientCount3.Size = new System.Drawing.Size(35, 13);
             this.lblIngredientCount3.TabIndex = 8;
@@ -129,7 +130,7 @@
             // lblIngredientCount2
             // 
             this.lblIngredientCount2.AutoSize = true;
-            this.lblIngredientCount2.Location = new System.Drawing.Point(207, 227);
+            this.lblIngredientCount2.Location = new System.Drawing.Point(238, 178);
             this.lblIngredientCount2.Name = "lblIngredientCount2";
             this.lblIngredientCount2.Size = new System.Drawing.Size(35, 13);
             this.lblIngredientCount2.TabIndex = 9;
@@ -138,7 +139,7 @@
             // lblIngredientCount1
             // 
             this.lblIngredientCount1.AutoSize = true;
-            this.lblIngredientCount1.Location = new System.Drawing.Point(207, 180);
+            this.lblIngredientCount1.Location = new System.Drawing.Point(238, 131);
             this.lblIngredientCount1.Name = "lblIngredientCount1";
             this.lblIngredientCount1.Size = new System.Drawing.Size(35, 13);
             this.lblIngredientCount1.TabIndex = 10;
@@ -147,7 +148,7 @@
             // lblIngredientName4
             // 
             this.lblIngredientName4.AutoSize = true;
-            this.lblIngredientName4.Location = new System.Drawing.Point(19, 333);
+            this.lblIngredientName4.Location = new System.Drawing.Point(12, 284);
             this.lblIngredientName4.Name = "lblIngredientName4";
             this.lblIngredientName4.Size = new System.Drawing.Size(35, 13);
             this.lblIngredientName4.TabIndex = 11;
@@ -155,7 +156,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(374, 38);
+            this.btnLoad.Location = new System.Drawing.Point(323, 28);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 12;
@@ -163,11 +164,23 @@
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
+            // lblRecipeName1
+            // 
+            this.lblRecipeName1.AutoSize = true;
+            this.lblRecipeName1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRecipeName1.Location = new System.Drawing.Point(24, 82);
+            this.lblRecipeName1.Name = "lblRecipeName1";
+            this.lblRecipeName1.Size = new System.Drawing.Size(177, 26);
+            this.lblRecipeName1.TabIndex = 13;
+            this.lblRecipeName1.Text = "<RecipeName>";
+            this.lblRecipeName1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmCostAnalyzer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblRecipeName1);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.lblIngredientName4);
             this.Controls.Add(this.lblIngredientCount1);
@@ -198,6 +211,7 @@
         private System.Windows.Forms.Label lblIngredientCount1;
         private System.Windows.Forms.Label lblIngredientName4;
         private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.Label lblRecipeName1;
     }
 }
 
