@@ -13,7 +13,7 @@ namespace GW2CostAnalysis
 {
     static class Program
     {
-        static bool bUseRefinedMaterials = true;
+        public static bool bUseRefinedMaterials = true;
         public static string strApi = "https://api.guildwars2.com/v2/";
         static HttpClient client = new HttpClient();
         public static ApiItem itemMain;

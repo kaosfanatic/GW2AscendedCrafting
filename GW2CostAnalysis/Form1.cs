@@ -15,6 +15,7 @@ namespace GW2CostAnalysis
         private int[] iInscriptionIDs = new int[] { -1, 46702, 46698, 46705, 46697, 46693, 46703, 46704, 49863, 46706, 46707, 46691, 46694, 46696, 46692, 46700, 66639, 46699, 46701, 46695 };
         private int gold, silver, copper;
         private int page = 0;
+        private bool bShowShoppingList = false;
 
         IList<string> strItemName;
         IList<string> strIngredientName1;
@@ -31,7 +32,13 @@ namespace GW2CostAnalysis
             InitializeComponent();
             //var itemTest = Program.GetItem(46697);
             cbInscriptionList.SelectedIndex = 0;
-            ttStopIngotsPlanks.SetToolTip(chkUseRefinedMaterials, "When checked, program will use Ingots, Planks, and Bolts instead of Ore, Logs, and Scraps.");
+            ttToolTips.SetToolTip(chkUseRefinedMaterials, "When checked, program will use Ingots, Planks, and Bolts instead of Ore, Logs, and Scraps.");
+            ttToolTips.SetToolTip(btnBack, "Return to the previous recipe");
+            ttToolTips.SetToolTip(btnRefresh, "Force update of prices");
+            chkUseRefinedMaterials.Checked = true;
+
+            this.Width = 508;
+            this.Height = 94;
 
             lblRecipeName1.Text = "";
             lblIngredientName1.Text = "";
@@ -42,6 +49,45 @@ namespace GW2CostAnalysis
             lblIngredientCount2.Text = "";
             lblIngredientCount3.Text = "";
             lblIngredientCount4.Text = "";
+        }
+
+        private void chkUseRefinedMaterials_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.bUseRefinedMaterials = chkUseRefinedMaterials.Checked;
+        }
+
+        private void btnAddTest_Click(object sender, EventArgs e)
+        {
+            string[] testListString = new string[] { "test", "test2", "test3" };
+            ListViewItem testListItem = new ListViewItem(testListString);
+            listShoppingList.Items.Add(testListItem);
+            
+        }
+
+        private void btnHide_Click(object sender, EventArgs e)
+        {
+            foreach(ListViewItem l in listShoppingList.Items)
+            {
+                if (l.Checked)
+                    l.Remove();
+            }
+        }
+
+        private void chkShowShopping_CheckedChanged(object sender, EventArgs e)
+        {
+            bShowShoppingList = chkShowShopping.Checked;
+            panelShopping.Visible = chkShowShopping.Checked;
+        }
+
+        private void panelShopping_VisibleChanged(object sender, EventArgs e)
+        {
+
+            this.Width = panelShopping.Visible ? 869 : 508;
+        }
+
+        private void panelRecipes_VisibleChanged(object sender, EventArgs e)
+        {
+            this.Height = panelRecipes.Visible ? 489 : 94;
         }
 
         private void UpdatePage()
@@ -111,7 +157,15 @@ namespace GW2CostAnalysis
                 }
                 else
                     lblInstantSell.Text = "Account bound";
+                
+                /* Adds to shopping list.
+                string[] testListString = new string[] { "test", "test2", "test3" };
+                ListViewItem testListItem = new ListViewItem(testListString);
+                listShoppingList.Items.Add(testListItem);
+                */
+            panelRecipes.Visible = true;
             }
         }
+
     }
 }
