@@ -13,12 +13,12 @@ namespace GW2CostAnalysis
 {
     static class Program
     {
-        static bool bStopAtIngotsAndPlanks = true;
+        static bool bUseRefinedMaterials = true;
         public static string strApi = "https://api.guildwars2.com/v2/";
         static HttpClient client = new HttpClient();
-        public static ApiItem itemTest;
-        public static ApiRecipe recTest;
-        public static Prices priTest;
+        public static ApiItem itemMain;
+        public static ApiRecipe recipeMain;
+        public static Prices pricesMain;
 
         public static int[] iIngredientIDs;
         public static ApiItem[] itmIngredients;
@@ -48,13 +48,13 @@ namespace GW2CostAnalysis
 
             try
             {
-                itemTest = new ApiItem();
-                itemTest = await GetItemAsync(ID).ConfigureAwait(false);
+                itemMain = new ApiItem();
+                itemMain = await GetItemAsync(ID).ConfigureAwait(false);
 
-                recTest = new ApiRecipe();
-                recTest = await GetRecipeAsync(ID).ConfigureAwait(false);
+                recipeMain = new ApiRecipe();
+                recipeMain = await GetRecipeAsync(ID).ConfigureAwait(false);
                 
-                foreach(ApiIngredient i in recTest.Ingredients)
+                foreach(ApiIngredient i in recipeMain.Ingredients)
                 {
                     iIngredientIDs[iNumIngredients] = i.item_id;
 
@@ -63,8 +63,8 @@ namespace GW2CostAnalysis
                     iNumIngredients++;
                 }
 
-                priTest = new Prices();
-                priTest = await GetPricesAsync(ID).ConfigureAwait(false);
+                pricesMain = new Prices();
+                pricesMain = await GetPricesAsync(ID).ConfigureAwait(false);
             }
             catch (Exception e)
             {

@@ -14,11 +14,26 @@ namespace GW2CostAnalysis
     {
         private int[] iInscriptionIDs = new int[] { -1, 46702, 46698, 46705, 46697, 46693, 46703, 46704, 49863, 46706, 46707, 46691, 46694, 46696, 46692, 46700, 66639, 46699, 46701, 46695 };
         private int gold, silver, copper;
+        private int page = 0;
+
+        IList<string> strItemName;
+        IList<string> strIngredientName1;
+        IList<string> strIngredientName2;
+        IList<string> strIngredientName3;
+        IList<string> strIngredientName4;
+        IList<int> iIngredientCount1;
+        IList<int> iIngredientCount2;
+        IList<int> iIngredientCount3;
+        IList<int> iIngredientCount4;
+
         public frmCostAnalyzer()
         {
             InitializeComponent();
             //var itemTest = Program.GetItem(46697);
             cbInscriptionList.SelectedIndex = 0;
+            ttStopIngotsPlanks.SetToolTip(chkUseRefinedMaterials, "When checked, program will use Ingots, Planks, and Bolts instead of Ore, Logs, and Scraps.");
+
+            lblRecipeName1.Text = "";
             lblIngredientName1.Text = "";
             lblIngredientName2.Text = "";
             lblIngredientName3.Text = "";
@@ -27,6 +42,27 @@ namespace GW2CostAnalysis
             lblIngredientCount2.Text = "";
             lblIngredientCount3.Text = "";
             lblIngredientCount4.Text = "";
+        }
+
+        private void UpdatePage()
+        {
+            lblRecipeName1.Text = strItemName[page];
+
+            lblIngredientName1.Text = strIngredientName1[page];
+            lblIngredientName2.Text = strIngredientName2[page];
+            lblIngredientName3.Text = strIngredientName3[page];
+            lblIngredientName4.Text = strIngredientName4[page];
+            lblIngredientCount1.Text = iIngredientCount1[page].ToString();
+            lblIngredientCount2.Text = iIngredientCount2[page].ToString();
+            lblIngredientCount3.Text = iIngredientCount3[page].ToString();
+            lblIngredientCount4.Text = iIngredientCount4[page].ToString();
+
+            if (page == 0)
+                btnBack.Enabled = false;
+            else
+                btnBack.Enabled = true;
+
+
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -38,24 +74,24 @@ namespace GW2CostAnalysis
             {
                 Program.RunAsync(iID).GetAwaiter().GetResult();
 
-                lblRecipeName1.Text = Program.itemTest.name;
+                lblRecipeName1.Text = Program.itemMain.name;
                 
                 if (Program.iNumIngredients > 0)
                 {
                     lblIngredientName1.Text = Program.itmIngredients[0].name;
-                    lblIngredientCount1.Text = Program.recTest.Ingredients[0].count.ToString();
+                    lblIngredientCount1.Text = Program.recipeMain.Ingredients[0].count.ToString();
                     if (Program.iNumIngredients > 1)
                     {
                         lblIngredientName2.Text = Program.itmIngredients[1].name;
-                        lblIngredientCount2.Text = Program.recTest.Ingredients[1].count.ToString();
+                        lblIngredientCount2.Text = Program.recipeMain.Ingredients[1].count.ToString();
                         if (Program.iNumIngredients > 2)
                         {
                             lblIngredientName3.Text = Program.itmIngredients[2].name;
-                            lblIngredientCount3.Text = Program.recTest.Ingredients[2].count.ToString();
+                            lblIngredientCount3.Text = Program.recipeMain.Ingredients[2].count.ToString();
                             if (Program.iNumIngredients > 3)
                             {
                                 lblIngredientName4.Text = Program.itmIngredients[3].name;
-                                lblIngredientCount4.Text = Program.recTest.Ingredients[3].count.ToString();
+                                lblIngredientCount4.Text = Program.recipeMain.Ingredients[3].count.ToString();
                             }
                         }
                     }
@@ -63,7 +99,7 @@ namespace GW2CostAnalysis
 
                 if (iID != 46699)
                 {
-                    int temp = Program.priTest.buys.unit_price;
+                    int temp = Program.pricesMain.buys.unit_price;
 
                     gold = temp / 10000;
                     temp = temp % 10000;
