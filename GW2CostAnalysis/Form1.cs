@@ -14,21 +14,13 @@ namespace GW2CostAnalysis
     {
         private int[] iInscriptionIDs = new int[] { -1, 46702, 46698, 46705, 46697, 46693, 46703, 46704, 49863, 46706, 46707, 46691, 46694, 46696, 46692, 46700, 66639, 46699, 46701, 46695 };
         private int gold, silver, copper;
-        private int page = 0;
+        //private int page = 0;
         private bool bShowShoppingList = false;
+        private IList<int> listRefined = new List<int>();
+        private IList<int> listUnrefined = new List<int>();
+        private static bool bReady = false;
 
-        IList<string> strItemName;
-
-        //Will use these to allow recursive recipe use.  When user is done looking at a sub recipe, hitting back will display previous data.
-        //Maybe I'll switch to a tree.  It would make sense, just tougher to implement.
-        IList<string> strIngredientName1;
-        IList<string> strIngredientName2;
-        IList<string> strIngredientName3;
-        IList<string> strIngredientName4;
-        IList<int> iIngredientCount1;
-        IList<int> iIngredientCount2;
-        IList<int> iIngredientCount3;
-        IList<int> iIngredientCount4;
+        public static ListView.ListViewItemCollection listMaster;
 
         public frmCostAnalyzer()
         {
@@ -36,11 +28,12 @@ namespace GW2CostAnalysis
             //var itemTest = Program.GetItem(46697);
             cbInscriptionList.SelectedIndex = 0;
             ttToolTips.SetToolTip(chkUseRefinedMaterials, "When checked, program will use Ingots, Planks, and Bolts instead of Ore, Logs, and Scraps.");
-            ttToolTips.SetToolTip(btnBack, "Return to the previous recipe");
-            ttToolTips.SetToolTip(btnRefresh, "Force update of prices");
+            /*ttToolTips.SetToolTip(btnBack, "Return to the previous recipe");
+            ttToolTips.SetToolTip(btnRefresh, "Force update of prices");*/
             chkUseRefinedMaterials.Checked = true;
+            listMaster = new ListView.ListViewItemCollection(listShoppingList);
 
-            this.Width = 508;
+            this.Width = 402;
             this.Height = 94;
 
             lblRecipeName1.Text = "";
@@ -57,13 +50,6 @@ namespace GW2CostAnalysis
         private void chkUseRefinedMaterials_CheckedChanged(object sender, EventArgs e)
         {
             Program.bUseRefinedMaterials = chkUseRefinedMaterials.Checked;
-        }
-
-        private void btnAddTest_Click(object sender, EventArgs e)
-        {
-            string[] testListString = new string[] { "test", "test2", "test3" };
-            ListViewItem testListItem = new ListViewItem(testListString);
-            listShoppingList.Items.Add(testListItem);
             
         }
 
@@ -85,70 +71,68 @@ namespace GW2CostAnalysis
         private void panelShopping_VisibleChanged(object sender, EventArgs e)
         {
 
-            this.Width = panelShopping.Visible ? 869 : 508;
+            this.Width = panelShopping.Visible ? 764 : 402;
         }
 
         private void panelRecipes_VisibleChanged(object sender, EventArgs e)
         {
-            this.Height = panelRecipes.Visible ? 489 : 94;
+            this.Height = panelRecipes.Visible ? 489 : 100;
         }
 
         private void UpdatePage()
         {
-            lblRecipeName1.Text = strItemName[page];
-
-            lblIngredientName1.Text = strIngredientName1[page];
-            lblIngredientName2.Text = strIngredientName2[page];
-            lblIngredientName3.Text = strIngredientName3[page];
-            lblIngredientName4.Text = strIngredientName4[page];
-            lblIngredientCount1.Text = iIngredientCount1[page].ToString();
-            lblIngredientCount2.Text = iIngredientCount2[page].ToString();
-            lblIngredientCount3.Text = iIngredientCount3[page].ToString();
-            lblIngredientCount4.Text = iIngredientCount4[page].ToString();
-
-            if (page == 0)
-                btnBack.Enabled = false;
-            else
-                btnBack.Enabled = true;
-
 
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
+            btnLoad.Text = "Loading...";
+            btnLoad.Enabled = false;
 
+            ResetList();
+            Program.itemMain = new Item();
+            //listShoppingList.Clear();
             int iID = iInscriptionIDs[cbInscriptionList.SelectedIndex];
             //MessageBox.Show(iID.ToString());
             if (iID != -1)
             {
-                Program.RunAsync(iID).GetAwaiter().GetResult();
+                Program.LoadItemAsync(iID, Program.itemMain).GetAwaiter().GetResult();
 
-                lblRecipeName1.Text = Program.itemMain.name;
-                
-                if (Program.iNumIngredients > 0)
+                lblRecipeName1.Text = Program.itemMain.itemData.name;
+
+                if(Program.itemMain.itemRecipe != null)
                 {
-                    lblIngredientName1.Text = Program.itmIngredients[0].name;
-                    lblIngredientCount1.Text = Program.recipeMain.Ingredients[0].count.ToString();
-                    if (Program.iNumIngredients > 1)
+                    if(Program.itemMain.itemIngredient1 != null)
                     {
-                        lblIngredientName2.Text = Program.itmIngredients[1].name;
-                        lblIngredientCount2.Text = Program.recipeMain.Ingredients[1].count.ToString();
-                        if (Program.iNumIngredients > 2)
-                        {
-                            lblIngredientName3.Text = Program.itmIngredients[2].name;
-                            lblIngredientCount3.Text = Program.recipeMain.Ingredients[2].count.ToString();
-                            if (Program.iNumIngredients > 3)
-                            {
-                                lblIngredientName4.Text = Program.itmIngredients[3].name;
-                                lblIngredientCount4.Text = Program.recipeMain.Ingredients[3].count.ToString();
-                            }
-                        }
+                        lblIngredientName1.Text = Program.itemMain.itemIngredient1.itemData.name;
+                        lblIngredientCount1.Text = Program.itemMain.itemIngredient1.iQuantity.ToString();
+
+                    }
+                    if (Program.itemMain.itemIngredient2 != null)
+                    {
+                        lblIngredientName2.Text = Program.itemMain.itemIngredient2.itemData.name;
+                        lblIngredientCount2.Text = Program.itemMain.itemIngredient2.iQuantity.ToString();
+
+                    }
+                    if (Program.itemMain.itemIngredient3 != null)
+                    {
+                        lblIngredientName3.Text = Program.itemMain.itemIngredient3.itemData.name;
+                        lblIngredientCount3.Text = Program.itemMain.itemIngredient3.iQuantity.ToString();
+
+                    }
+                    if (Program.itemMain.itemIngredient4 != null)
+                    {
+                        lblIngredientName4.Text = Program.itemMain.itemIngredient4.itemData.name;
+                        lblIngredientCount4.Text = Program.itemMain.itemIngredient4.iQuantity.ToString();
+
                     }
                 }
 
+                Program.PopulateList(Program.itemMain,1).GetAwaiter().GetResult();
+
                 if (iID != 46699)
                 {
-                    int temp = Program.pricesMain.buys.unit_price;
+                    int temp = Program.itemMain.itemPrice.buys.unit_price;
 
                     gold = temp / 10000;
                     temp = temp % 10000;
@@ -160,15 +144,64 @@ namespace GW2CostAnalysis
                 }
                 else
                     lblInstantSell.Text = "Account bound";
-                
-                /* Adds to shopping list.
-                string[] testListString = new string[] { "test", "test2", "test3" };
-                ListViewItem testListItem = new ListViewItem(testListString);
-                listShoppingList.Items.Add(testListItem);
-                */
-            panelRecipes.Visible = true;
+
+                Program.CalculatePrices().GetAwaiter().GetResult();
+
+                FillShoppingList();
+
+                panelRecipes.Visible = true;
             }
+
+            
+
+            btnLoad.Text = "Load Recipe";
+            btnLoad.Enabled = true;
+            bReady = true;
+        }
+        
+        private void FillShoppingList()
+        {
+            string[] strListEntry = new string[3];
+            ListViewItem temp = new ListViewItem();
+
+            for(int i = 0; i < Program.iMasterListIDs.Count; i++)
+            {
+                strListEntry[0] = Program.strMasterListNames[i];
+                strListEntry[1] = Program.iMasterListCount[i].ToString();
+                strListEntry[2] = Program.iMasterListPrice[i].ToString();
+                temp = new ListViewItem(strListEntry);
+                listMaster.Add(temp);
+            }
+
+            //listShoppingList.Items.AddRange( = items;
+            
+
+            int tC, tS, tG;
+            int totalPrice = Program.totalPrice;
+            tG = totalPrice / 10000;
+            totalPrice = totalPrice % 10000;
+            tS = totalPrice / 100;
+            tC = totalPrice % 100;
+
+
+            lblTotalCost.Text = string.Format("{0}g {1}s {2}c", tG, tS, tC);
         }
 
+        private void ResetList()
+        {
+
+            Program.iMasterListIDs = new List<int>();
+            Program.iMasterListCount = new List<int>();
+            Program.iMasterListPrice = new List<int>();
+            Program.strMasterListNames = new List<string>();
+
+            if (listShoppingList.Items.Count > 0)
+            {
+                foreach (ListViewItem i in listShoppingList.Items)
+                {
+                    i.Remove();
+                }
+            }
+        }
     }
 }

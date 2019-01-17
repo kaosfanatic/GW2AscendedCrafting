@@ -41,13 +41,7 @@
             this.lblIngredientName4 = new System.Windows.Forms.Label();
             this.btnLoad = new System.Windows.Forms.Button();
             this.lblRecipeName1 = new System.Windows.Forms.Label();
-            this.btnBack = new System.Windows.Forms.Button();
-            this.btnForward1 = new System.Windows.Forms.Button();
-            this.btnForward2 = new System.Windows.Forms.Button();
-            this.btnForward3 = new System.Windows.Forms.Button();
-            this.btnForward4 = new System.Windows.Forms.Button();
             this.chkUseRefinedMaterials = new System.Windows.Forms.CheckBox();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.ttToolTips = new System.Windows.Forms.ToolTip(this.components);
             this.lblShoppingList = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -57,7 +51,6 @@
             this.listShoppingCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listShoppingPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnHide = new System.Windows.Forms.Button();
-            this.btnAddTest = new System.Windows.Forms.Button();
             this.panelShopping = new System.Windows.Forms.Panel();
             this.chkShowShopping = new System.Windows.Forms.CheckBox();
             this.panelRecipes = new System.Windows.Forms.Panel();
@@ -99,7 +92,7 @@
             "Wupwup Celestial Inscription",
             "Zintl Shaman Inscription",
             "Zojja\'s Berserker Inscription"});
-            this.cbInscriptionList.Location = new System.Drawing.Point(22, 12);
+            this.cbInscriptionList.Location = new System.Drawing.Point(12, 12);
             this.cbInscriptionList.Name = "cbInscriptionList";
             this.cbInscriptionList.Size = new System.Drawing.Size(179, 21);
             this.cbInscriptionList.TabIndex = 2;
@@ -178,7 +171,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(295, 12);
+            this.btnLoad.Location = new System.Drawing.Point(282, 12);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(99, 25);
             this.btnLoad.TabIndex = 12;
@@ -189,63 +182,18 @@
             // lblRecipeName1
             // 
             this.lblRecipeName1.AutoSize = true;
-            this.lblRecipeName1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRecipeName1.Location = new System.Drawing.Point(24, 19);
+            this.lblRecipeName1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRecipeName1.Location = new System.Drawing.Point(30, 26);
             this.lblRecipeName1.Name = "lblRecipeName1";
-            this.lblRecipeName1.Size = new System.Drawing.Size(177, 26);
+            this.lblRecipeName1.Size = new System.Drawing.Size(155, 24);
             this.lblRecipeName1.TabIndex = 13;
             this.lblRecipeName1.Text = "<RecipeName>";
             this.lblRecipeName1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnBack
-            // 
-            this.btnBack.Location = new System.Drawing.Point(323, 313);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(60, 25);
-            this.btnBack.TabIndex = 14;
-            this.btnBack.Text = "Back";
-            this.btnBack.UseVisualStyleBackColor = true;
-            // 
-            // btnForward1
-            // 
-            this.btnForward1.Location = new System.Drawing.Point(323, 65);
-            this.btnForward1.Name = "btnForward1";
-            this.btnForward1.Size = new System.Drawing.Size(60, 25);
-            this.btnForward1.TabIndex = 15;
-            this.btnForward1.Text = "Recipe";
-            this.btnForward1.UseVisualStyleBackColor = true;
-            // 
-            // btnForward2
-            // 
-            this.btnForward2.Location = new System.Drawing.Point(323, 127);
-            this.btnForward2.Name = "btnForward2";
-            this.btnForward2.Size = new System.Drawing.Size(60, 25);
-            this.btnForward2.TabIndex = 16;
-            this.btnForward2.Text = "Recipe";
-            this.btnForward2.UseVisualStyleBackColor = true;
-            // 
-            // btnForward3
-            // 
-            this.btnForward3.Location = new System.Drawing.Point(323, 189);
-            this.btnForward3.Name = "btnForward3";
-            this.btnForward3.Size = new System.Drawing.Size(60, 25);
-            this.btnForward3.TabIndex = 17;
-            this.btnForward3.Text = "Recipe";
-            this.btnForward3.UseVisualStyleBackColor = true;
-            // 
-            // btnForward4
-            // 
-            this.btnForward4.Location = new System.Drawing.Point(323, 251);
-            this.btnForward4.Name = "btnForward4";
-            this.btnForward4.Size = new System.Drawing.Size(60, 25);
-            this.btnForward4.TabIndex = 18;
-            this.btnForward4.Text = "Recipe";
-            this.btnForward4.UseVisualStyleBackColor = true;
-            // 
             // chkUseRefinedMaterials
             // 
             this.chkUseRefinedMaterials.AutoSize = true;
-            this.chkUseRefinedMaterials.Location = new System.Drawing.Point(356, 344);
+            this.chkUseRefinedMaterials.Location = new System.Drawing.Point(251, 39);
             this.chkUseRefinedMaterials.Name = "chkUseRefinedMaterials";
             this.chkUseRefinedMaterials.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkUseRefinedMaterials.Size = new System.Drawing.Size(130, 17);
@@ -254,20 +202,11 @@
             this.chkUseRefinedMaterials.UseVisualStyleBackColor = true;
             this.chkUseRefinedMaterials.CheckedChanged += new System.EventHandler(this.chkUseRefinedMaterials_CheckedChanged);
             // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Location = new System.Drawing.Point(400, 12);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(60, 25);
-            this.btnRefresh.TabIndex = 20;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            // 
             // lblShoppingList
             // 
             this.lblShoppingList.AutoSize = true;
             this.lblShoppingList.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShoppingList.Location = new System.Drawing.Point(113, 23);
+            this.lblShoppingList.Location = new System.Drawing.Point(105, 18);
             this.lblShoppingList.Name = "lblShoppingList";
             this.lblShoppingList.Size = new System.Drawing.Size(144, 25);
             this.lblShoppingList.TabIndex = 21;
@@ -311,7 +250,7 @@
             // 
             this.listShoppingMaterial.Tag = "shopMaterial";
             this.listShoppingMaterial.Text = "Material";
-            this.listShoppingMaterial.Width = 195;
+            this.listShoppingMaterial.Width = 203;
             // 
             // listShoppingCount
             // 
@@ -335,26 +274,15 @@
             this.btnHide.UseVisualStyleBackColor = true;
             this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
             // 
-            // btnAddTest
-            // 
-            this.btnAddTest.Location = new System.Drawing.Point(31, 26);
-            this.btnAddTest.Name = "btnAddTest";
-            this.btnAddTest.Size = new System.Drawing.Size(48, 24);
-            this.btnAddTest.TabIndex = 32;
-            this.btnAddTest.Text = "Test";
-            this.btnAddTest.UseVisualStyleBackColor = true;
-            this.btnAddTest.Click += new System.EventHandler(this.btnAddTest_Click);
-            // 
             // panelShopping
             // 
             this.panelShopping.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelShopping.Controls.Add(this.btnAddTest);
             this.panelShopping.Controls.Add(this.btnHide);
             this.panelShopping.Controls.Add(this.listShoppingList);
             this.panelShopping.Controls.Add(this.lblTotalCost);
             this.panelShopping.Controls.Add(this.label5);
             this.panelShopping.Controls.Add(this.lblShoppingList);
-            this.panelShopping.Location = new System.Drawing.Point(492, -1);
+            this.panelShopping.Location = new System.Drawing.Point(387, -1);
             this.panelShopping.Name = "panelShopping";
             this.panelShopping.Size = new System.Drawing.Size(362, 452);
             this.panelShopping.TabIndex = 24;
@@ -364,7 +292,7 @@
             // chkShowShopping
             // 
             this.chkShowShopping.AutoSize = true;
-            this.chkShowShopping.Location = new System.Drawing.Point(366, 369);
+            this.chkShowShopping.Location = new System.Drawing.Point(252, 364);
             this.chkShowShopping.Name = "chkShowShopping";
             this.chkShowShopping.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkShowShopping.Size = new System.Drawing.Size(120, 17);
@@ -377,12 +305,6 @@
             // 
             this.panelRecipes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelRecipes.Controls.Add(this.chkShowShopping);
-            this.panelRecipes.Controls.Add(this.chkUseRefinedMaterials);
-            this.panelRecipes.Controls.Add(this.btnForward4);
-            this.panelRecipes.Controls.Add(this.btnForward3);
-            this.panelRecipes.Controls.Add(this.btnForward2);
-            this.panelRecipes.Controls.Add(this.btnForward1);
-            this.panelRecipes.Controls.Add(this.btnBack);
             this.panelRecipes.Controls.Add(this.lblRecipeName1);
             this.panelRecipes.Controls.Add(this.lblIngredientName4);
             this.panelRecipes.Controls.Add(this.lblIngredientCount1);
@@ -392,9 +314,9 @@
             this.panelRecipes.Controls.Add(this.lblIngredientName3);
             this.panelRecipes.Controls.Add(this.lblIngredientName2);
             this.panelRecipes.Controls.Add(this.lblIngredientName1);
-            this.panelRecipes.Location = new System.Drawing.Point(-1, 54);
+            this.panelRecipes.Location = new System.Drawing.Point(-1, 62);
             this.panelRecipes.Name = "panelRecipes";
-            this.panelRecipes.Size = new System.Drawing.Size(494, 397);
+            this.panelRecipes.Size = new System.Drawing.Size(389, 389);
             this.panelRecipes.TabIndex = 26;
             this.panelRecipes.Visible = false;
             this.panelRecipes.VisibleChanged += new System.EventHandler(this.panelRecipes_VisibleChanged);
@@ -403,10 +325,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 450);
+            this.ClientSize = new System.Drawing.Size(748, 450);
             this.Controls.Add(this.panelRecipes);
+            this.Controls.Add(this.chkUseRefinedMaterials);
             this.Controls.Add(this.panelShopping);
-            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.cbInscriptionList);
             this.Controls.Add(this.lblInstantSell);
@@ -435,13 +357,7 @@
         private System.Windows.Forms.Label lblIngredientName4;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Label lblRecipeName1;
-        private System.Windows.Forms.Button btnBack;
-        private System.Windows.Forms.Button btnForward1;
-        private System.Windows.Forms.Button btnForward2;
-        private System.Windows.Forms.Button btnForward3;
-        private System.Windows.Forms.Button btnForward4;
         private System.Windows.Forms.CheckBox chkUseRefinedMaterials;
-        private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.ToolTip ttToolTips;
         private System.Windows.Forms.Label lblShoppingList;
         private System.Windows.Forms.Label label5;
@@ -451,7 +367,6 @@
         private System.Windows.Forms.ColumnHeader listShoppingCount;
         private System.Windows.Forms.ColumnHeader listShoppingPrice;
         private System.Windows.Forms.Button btnHide;
-        private System.Windows.Forms.Button btnAddTest;
         private System.Windows.Forms.Panel panelShopping;
         private System.Windows.Forms.CheckBox chkShowShopping;
         private System.Windows.Forms.Panel panelRecipes;

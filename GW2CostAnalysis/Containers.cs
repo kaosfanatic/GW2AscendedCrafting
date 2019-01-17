@@ -29,25 +29,25 @@ namespace GW2CostAnalysis
 
     public class Item
     {
-        ApiItem itemData { get; set; }
+        public ApiItem itemData { get; set; }
 
-        Prices itemPrice { get; set; }
+        public Prices itemPrice { get; set; }
 
-        Recipe itemRecipe { get; set; }
+        public Recipe itemRecipe { get; set; }
 
-        Item itemIngredient1;
-        Item itemIngredient2;
-        Item itemIngredient3;
-        Item itemIngredient4;
+        public Item itemIngredient1;
+        public Item itemIngredient2;
+        public Item itemIngredient3;
+        public Item itemIngredient4;
 
-        Item itemParent;
+        public int iQuantity = 1;
     }
 
     public class Recipe
     {
-        public IList<int> itemIDs { get; set; }
-        public IList<string> itemNames { get; set; }
-        public IList<int> itemCounts { get; set; }
+        public IList<int> itemIDs = new List<int>();
+        public IList<string> itemNames = new List<string>();
+        public IList<int> itemCounts = new List<int>();
     }
 
     public class ApiIngredient
@@ -67,7 +67,7 @@ namespace GW2CostAnalysis
         public IList<string> Disciplines { get; set; }
         public int Min_Rating { get; set; }
         public IList<string> Flags { get; set; }
-        public IList<ApiIngredient> Ingredients { get; set; }
+        public IList<ApiIngredient> Ingredients = new List<ApiIngredient>();
         public string strChatLink { get; set; }
     }
 
@@ -77,6 +77,13 @@ namespace GW2CostAnalysis
         public int quantity { get; set; }
 
     }
+    
+    public class Listing
+    {
+        public int unit_price { get; set; }
+        public int quantity { get; set; }
+        public int listings { get; set; }
+    }
 
     public class Prices
     {
@@ -84,6 +91,14 @@ namespace GW2CostAnalysis
         public bool whitelisted { get; set; }
         public BuySell buys { get; set; }
         public BuySell sells { get; set; }
+    }
+
+    public class Listings
+    {
+        public int id { get; set; }
+        public IList<Listing> buys { get; set; }
+        public IList<Listing> sells { get; set; }
+
     }
 
 }
