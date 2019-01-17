@@ -128,7 +128,7 @@ namespace GW2CostAnalysis
                     }
                 }
 
-                Program.PopulateList(Program.itemMain,1).GetAwaiter().GetResult();
+                Program.PopulateList(Program.itemMain, 1);
 
                 if (iID != 46699)
                 {

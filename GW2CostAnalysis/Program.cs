@@ -282,7 +282,7 @@ namespace GW2CostAnalysis
             return prices;
         }
 
-        public static async Task PopulateList(Item curItem, int multiplier)
+        public static void PopulateList(Item curItem, int multiplier)
         {
             //MessageBox.Show(string.Format("{0} of {1}",curItem.iQuantity,curItem.itemData.name));
             if (curItem.itemIngredient1 == null && curItem.itemIngredient2 == null && curItem.itemIngredient3 == null && curItem.itemIngredient4 == null)
@@ -308,25 +308,25 @@ namespace GW2CostAnalysis
                 if (curItem.itemIngredient1 != null)
                 {
                     //MessageBox.Show(string.Format("Getting list for {0}", curItem.itemIngredient1.itemData.name));
-                    PopulateList(curItem.itemIngredient1, curItem.iQuantity * multiplier).GetAwaiter().GetResult();
+                    PopulateList(curItem.itemIngredient1, curItem.iQuantity * multiplier);
                 }
 
                 if (curItem.itemIngredient2 != null)
                 {
                     //MessageBox.Show(string.Format("Getting list for {0}", curItem.itemIngredient2.itemData.name));
-                    PopulateList(curItem.itemIngredient2, curItem.iQuantity * multiplier).GetAwaiter().GetResult();
+                    PopulateList(curItem.itemIngredient2, curItem.iQuantity * multiplier);
                 }
 
                 if (curItem.itemIngredient3 != null)
                 {
                     //MessageBox.Show(string.Format("Getting list for {0}", curItem.itemIngredient3.itemData.name));
-                    PopulateList(curItem.itemIngredient3, curItem.iQuantity * multiplier).GetAwaiter().GetResult();
+                    PopulateList(curItem.itemIngredient3, curItem.iQuantity * multiplier);
                 }
 
                 if (curItem.itemIngredient4 != null)
                 {
                     //MessageBox.Show(string.Format("Getting list for {0}", curItem.itemIngredient4.itemData.name));
-                    PopulateList(curItem.itemIngredient4, curItem.iQuantity * multiplier).GetAwaiter().GetResult();
+                    PopulateList(curItem.itemIngredient4, curItem.iQuantity * multiplier);
                 }
             }
         }
