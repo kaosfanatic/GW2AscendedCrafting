@@ -11,6 +11,40 @@ using Newtonsoft.Json.Serialization;
 
 namespace GW2CostAnalysis
 {
+    public enum IngotIDs
+    {
+        Copper = 19680,
+        Bronze = 19679,
+        Iron = 19683,
+        Silver = 19687,
+        Gold = 19682,
+        Steel = 19688,
+        Platinum = 19686,
+        Darksteel = 19681,
+        Mithril = 19684,
+        Orichalcum = 19685
+    }
+
+    public enum BoltIDs
+    {
+        Jute = 19720,
+        Wool = 19740,
+        Cotton = 19742,
+        Linen = 19744,
+        Silk = 19747,
+        Gossamer = 19746
+    }
+
+    public enum PlankIDs
+    {
+        Green = 19710,
+        Soft = 19713,
+        Seasoned = 19714,
+        Hard = 19711,
+        Elder = 19709,
+        Ancient = 19712
+    }
+
     static class Program
     {
         public static bool bUseRefinedMaterials = true;
@@ -23,6 +57,12 @@ namespace GW2CostAnalysis
         public static int[] iIngredientIDs;
         public static ApiItem[] itmIngredients;
         public static int iNumIngredients;
+
+        public static IList<int> iMasterList;
+        
+
+        
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

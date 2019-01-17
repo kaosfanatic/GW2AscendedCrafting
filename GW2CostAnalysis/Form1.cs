@@ -18,6 +18,9 @@ namespace GW2CostAnalysis
         private bool bShowShoppingList = false;
 
         IList<string> strItemName;
+
+        //Will use these to allow recursive recipe use.  When user is done looking at a sub recipe, hitting back will display previous data.
+        //Maybe I'll switch to a tree.  It would make sense, just tougher to implement.
         IList<string> strIngredientName1;
         IList<string> strIngredientName2;
         IList<string> strIngredientName3;

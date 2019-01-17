@@ -5,7 +5,7 @@ namespace GW2CostAnalysis
 {
     public class Details
     {
-
+        //Will add if I find anything that needs it.  For now, it's just a 'model' to ensure API loads correctly.
     }
 
     public class ApiItem
@@ -29,13 +29,18 @@ namespace GW2CostAnalysis
 
     public class Item
     {
-        ApiItem itemData;
+        ApiItem itemData { get; set; }
 
-        public int localID;
+        Prices itemPrice { get; set; }
 
-        Prices itemPrice;
+        Recipe itemRecipe { get; set; }
 
-        Recipe itemRecipe;
+        Item itemIngredient1;
+        Item itemIngredient2;
+        Item itemIngredient3;
+        Item itemIngredient4;
+
+        Item itemParent;
     }
 
     public class Recipe
