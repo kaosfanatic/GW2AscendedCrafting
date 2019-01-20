@@ -20,10 +20,10 @@ namespace GW2CostAnalysis
         public static ApiRecipe recipeMain = new ApiRecipe();
         //public static Prices pricesMain = new Prices();
 
-        public static IList<int> iMasterListIDs;
-        public static IList<int> iMasterListCount;
-        public static IList<int> iMasterListPrice;
-        public static IList<string> strMasterListNames;
+        public static List<int> iMasterListIDs;
+        public static List<int> iMasterListCount;
+        public static List<int> iMasterListPrice;
+        public static List<string> strMasterListNames;
 
 
         public static int totalPrice = 0;
@@ -71,14 +71,9 @@ namespace GW2CostAnalysis
             Application.Run(new frmCostAnalyzer());
         }
 
-        public static async Task LoadItemAsync(int ID, Item curItem)
+        public static async Task LoadItemAsync(int ID, Item curItem, int multiplier)
         {
             //MessageBox.Show("Test");
-
-            iMasterListIDs = new List<int>();
-            iMasterListCount = new List<int>();
-            iMasterListPrice = new List<int>();
-            strMasterListNames = new List<string>();
 
             try
             {
@@ -93,8 +88,9 @@ namespace GW2CostAnalysis
                 ApiItem temp = new ApiItem();
 
                 //string testString = string.Format("Current Recipe: {0}", curItem.itemData.name);
-                if (curRecipe != null)
+                if (curRecipe != null && (!RefinedIDs.Contains(curItem.itemData.id) || !bUseRefinedMaterials))
                 {
+                    //MessageBox.Show(string.Format("Current Item: {0}\n\rCalculating ingredients", curItem.itemData.name));
                     foreach (ApiIngredient i in curRecipe.Ingredients)
                     {
                         temp = await GetItemAsync(i.item_id).ConfigureAwait(false);
@@ -104,75 +100,67 @@ namespace GW2CostAnalysis
                         curItem.itemRecipe.itemCounts.Add(i.count);
                         curItem.itemRecipe.itemNames.Add(temp.name);
                     }
+
+                    switch (curItem.itemRecipe.itemIDs.Count)
+                    {
+                        case 4:
+                            curItem.itemIngredient4 = new Item
+                            {
+                                iQuantity = curItem.itemRecipe.itemCounts[3]
+                            };
+                            LoadItemAsync(curItem.itemRecipe.itemIDs[3], curItem.itemIngredient4, curItem.iQuantity * multiplier).GetAwaiter().GetResult();
+                            goto case 3;
+                        case 3:
+                            curItem.itemIngredient3 = new Item
+                            {
+                                iQuantity = curItem.itemRecipe.itemCounts[2]
+                            };
+                            LoadItemAsync(curItem.itemRecipe.itemIDs[2], curItem.itemIngredient3, curItem.iQuantity * multiplier).GetAwaiter().GetResult();
+                            goto case 2;
+                        case 2:
+                            curItem.itemIngredient2 = new Item
+                            {
+                                iQuantity = curItem.itemRecipe.itemCounts[1]
+                            };
+                            LoadItemAsync(curItem.itemRecipe.itemIDs[1], curItem.itemIngredient2, curItem.iQuantity * multiplier).GetAwaiter().GetResult();
+                            goto case 1;
+                        case 1:
+                            curItem.itemIngredient1 = new Item
+                            {
+                                iQuantity = curItem.itemRecipe.itemCounts[0]
+                            };
+                            LoadItemAsync(curItem.itemRecipe.itemIDs[0], curItem.itemIngredient1, curItem.iQuantity * multiplier).GetAwaiter().GetResult();
+                            goto default;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    
+                    if (!curItem.itemData.flags.Contains("AccountBound"))
+                    {
+                        //MessageBox.Show(string.Format("Ingredient '{0}' does not have sub-recipe.", curItem.itemData.name));
+                        if (iMasterListIDs.Contains(curItem.itemData.id))
+                        {
+                            iMasterListCount[iMasterListIDs.IndexOf(curItem.itemData.id)] += (curItem.iQuantity * multiplier);
+                            //MessageBox.Show(string.Format("Item Exists.  Added {0} to {1}.", (curItem.iQuantity * multiplier), curItem.itemData.name));
+                        }
+                        else
+                        {
+                            iMasterListCount.Add(curItem.iQuantity * multiplier);
+                            iMasterListIDs.Add(curItem.itemData.id);
+                            strMasterListNames.Add(curItem.itemData.name);
+                           //MessageBox.Show(string.Format("Item Does not Exist.  Added {0} of {1}.", (curItem.iQuantity * multiplier), curItem.itemData.name));
+                        }
+                    }
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show("Failed: " + e.ToString());
             }
-
-            if (curItem.itemRecipe.itemIDs.Count > 0)
-            {
-                bool bDoNext = true;
-                foreach(int i in RefinedIDs)
-                {
-                    if (curItem.itemData.id == i && bUseRefinedMaterials)
-                        bDoNext = false;
-                }
-                if (bDoNext)
-                {
-                    curItem.itemIngredient1 = new Item();
-                    curItem.itemIngredient1.iQuantity = curItem.itemRecipe.itemCounts[0];
-                    LoadItemAsync(curItem.itemRecipe.itemIDs[0], curItem.itemIngredient1).GetAwaiter().GetResult();
-                }
-            }
-            if (curItem.itemRecipe.itemIDs.Count > 1)
-            {
-                bool bDoNext = true;
-                foreach (int i in RefinedIDs)
-                {
-                    if (curItem.itemData.id == i && bUseRefinedMaterials)
-                        bDoNext = false;
-                }
-                if (bDoNext)
-                {
-                    curItem.itemIngredient2 = new Item();
-                    curItem.itemIngredient2.iQuantity = curItem.itemRecipe.itemCounts[1];
-                    LoadItemAsync(curItem.itemRecipe.itemIDs[1], curItem.itemIngredient2).GetAwaiter().GetResult();
-                }
-            }
-            if (curItem.itemRecipe.itemIDs.Count > 2)
-            {
-                bool bDoNext = true;
-                foreach (int i in RefinedIDs)
-                {
-                    if (curItem.itemData.id == i && bUseRefinedMaterials)
-                        bDoNext = false;
-                }
-                if (bDoNext)
-                {
-                    curItem.itemIngredient3 = new Item();
-                    curItem.itemIngredient3.iQuantity = curItem.itemRecipe.itemCounts[2];
-                    LoadItemAsync(curItem.itemRecipe.itemIDs[2], curItem.itemIngredient3).GetAwaiter().GetResult();
-                }
-            }
-            if (curItem.itemRecipe.itemIDs.Count > 3)
-            {
-                bool bDoNext = true;
-                foreach (int i in RefinedIDs)
-                {
-                    if (curItem.itemData.id == i && bUseRefinedMaterials)
-                        bDoNext = false;
-                }
-                if (bDoNext)
-                {
-                    curItem.itemIngredient4 = new Item();
-                    curItem.itemIngredient4.iQuantity = curItem.itemRecipe.itemCounts[3];
-                    LoadItemAsync(curItem.itemRecipe.itemIDs[3], curItem.itemIngredient4).GetAwaiter().GetResult();
-                }
-            }
-
-            Program.itemMain.itemPrice = await Program.GetPricesAsync(Program.itemMain.itemData.id).ConfigureAwait(false);
+            
         }
 
         public static async Task<ApiRecipe> GetRecipeAsync(int ID)
@@ -282,64 +270,18 @@ namespace GW2CostAnalysis
             return prices;
         }
 
-        public static void PopulateList(Item curItem, int multiplier)
-        {
-            //MessageBox.Show(string.Format("{0} of {1}",curItem.iQuantity,curItem.itemData.name));
-            if (curItem.itemIngredient1 == null && curItem.itemIngredient2 == null && curItem.itemIngredient3 == null && curItem.itemIngredient4 == null)
-            {
-                if (!curItem.itemData.flags.Contains("AccountBound"))
-                {
-                    if (iMasterListIDs.Contains(curItem.itemData.id))
-                    {
-                        iMasterListCount[iMasterListIDs.IndexOf(curItem.itemData.id)] += (curItem.iQuantity * multiplier);
-                        //MessageBox.Show(string.Format("Added {0} to {1}.", (curItem.iQuantity * multiplier), curItem.itemData.name));
-                    }
-                    else
-                    {
-                        iMasterListCount.Add(curItem.iQuantity * multiplier);
-                        iMasterListIDs.Add(curItem.itemData.id);
-                        strMasterListNames.Add(curItem.itemData.name);
-                        //MessageBox.Show(string.Format("Added {0} of {1}.", (curItem.iQuantity * multiplier), curItem.itemData.name));
-                    }
-                }
-            }
-            else
-            {
-                if (curItem.itemIngredient1 != null)
-                {
-                    //MessageBox.Show(string.Format("Getting list for {0}", curItem.itemIngredient1.itemData.name));
-                    PopulateList(curItem.itemIngredient1, curItem.iQuantity * multiplier);
-                }
-
-                if (curItem.itemIngredient2 != null)
-                {
-                    //MessageBox.Show(string.Format("Getting list for {0}", curItem.itemIngredient2.itemData.name));
-                    PopulateList(curItem.itemIngredient2, curItem.iQuantity * multiplier);
-                }
-
-                if (curItem.itemIngredient3 != null)
-                {
-                    //MessageBox.Show(string.Format("Getting list for {0}", curItem.itemIngredient3.itemData.name));
-                    PopulateList(curItem.itemIngredient3, curItem.iQuantity * multiplier);
-                }
-
-                if (curItem.itemIngredient4 != null)
-                {
-                    //MessageBox.Show(string.Format("Getting list for {0}", curItem.itemIngredient4.itemData.name));
-                    PopulateList(curItem.itemIngredient4, curItem.iQuantity * multiplier);
-                }
-            }
-        }
-
         public static async Task CalculatePrices() { 
 
-            Listings listing = new Listings();
+            List<Listings> listing = new List<Listings>();
+
+            totalPrice = 0;
 
             int index = 0;
 
+            listing = await RetrieveListingsAsync(iMasterListIDs).ConfigureAwait(false);
+
             foreach (int i in iMasterListIDs)
             {
-                listing = await RetrieveListingsAsync(i).ConfigureAwait(false);
 
                 int buyCounter = iMasterListCount[index];
                 int buyIndex = 0;
@@ -347,15 +289,15 @@ namespace GW2CostAnalysis
 
                 while (buyCounter > 0)
                 {
-                    if (iMasterListCount[index] <= listing.buys[buyIndex].quantity)
+                    if (iMasterListCount[index] <= listing[index].buys[buyIndex].quantity)
                     {
-                        tempCost = tempCost + (buyCounter * listing.buys[buyIndex].unit_price);
+                        tempCost = tempCost + (buyCounter * listing[index].buys[buyIndex].unit_price);
                         buyCounter = 0;
                     }
                     else
                     {
-                        tempCost = tempCost + (listing.buys[buyIndex].quantity * listing.buys[buyIndex].unit_price);
-                        buyCounter -= listing.buys[buyIndex].quantity;
+                        tempCost = tempCost + (listing[index].buys[buyIndex].quantity * listing[index].buys[buyIndex].unit_price);
+                        buyCounter -= listing[index].buys[buyIndex].quantity;
                     }
                 }
 
@@ -368,16 +310,17 @@ namespace GW2CostAnalysis
 
         }
 
-        public static async Task<Listings> RetrieveListingsAsync(int ID)
+        public static async Task<List<Listings>> RetrieveListingsAsync(List<int> ID)
         {
-            Listings listing = null;
-            ApiItem item = await GetItemAsync(ID).ConfigureAwait(false);
+            List<Listings> listing = null;
 
-            if (item.flags.Contains("AccountBound"))
-                return listing;
+            string strApiPath = "commerce/listings?ids=";
+            if(ID.Count > 0)
+            {
+                foreach (int i in ID)
+                    strApiPath += ID.IndexOf(i) == 0 ? i.ToString() : string.Format(",{0}",i.ToString());
+            }
 
-            string strApiPath;
-            strApiPath = "commerce/listings/" + ID.ToString();
 
             HttpResponseMessage response = await client.GetAsync(strApiPath).ConfigureAwait(false);
 
@@ -387,7 +330,7 @@ namespace GW2CostAnalysis
 
                 //MessageBox.Show(jsonString);
 
-                var lListing = JsonConvert.DeserializeObject<Listings>(jsonString);
+                var lListing = JsonConvert.DeserializeObject<List<Listings>>(jsonString);
 
                 listing = lListing;
             }

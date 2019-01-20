@@ -58,8 +58,26 @@ namespace GW2CostAnalysis
             foreach(ListViewItem l in listShoppingList.Items)
             {
                 if (l.Checked)
+                {
+                    int i = listShoppingList.Items.IndexOf(l);
                     l.Remove();
+                    Program.iMasterListCount.RemoveAt(i);
+                    Program.iMasterListIDs.RemoveAt(i);
+                    Program.totalPrice -= Program.iMasterListPrice[i];
+                    Program.iMasterListPrice.RemoveAt(i);
+                    Program.strMasterListNames.RemoveAt(i);
+                }
             }
+            int tC, tS, tG;
+            int totalPrice = Program.totalPrice;
+            tG = totalPrice / 10000;
+            totalPrice = totalPrice % 10000;
+            tS = totalPrice / 100;
+            tC = totalPrice % 100;
+
+
+            lblTotalCost.Text = string.Format("{0}g {1}s {2}c", tG, tS, tC);
+
         }
 
         private void chkShowShopping_CheckedChanged(object sender, EventArgs e)
@@ -89,6 +107,11 @@ namespace GW2CostAnalysis
             btnLoad.Text = "Loading...";
             btnLoad.Enabled = false;
 
+            Program.iMasterListIDs = new List<int>();
+            Program.iMasterListCount = new List<int>();
+            Program.iMasterListPrice = new List<int>();
+            Program.strMasterListNames = new List<string>();
+
             ResetList();
             Program.itemMain = new Item();
             //listShoppingList.Clear();
@@ -96,7 +119,7 @@ namespace GW2CostAnalysis
             //MessageBox.Show(iID.ToString());
             if (iID != -1)
             {
-                Program.LoadItemAsync(iID, Program.itemMain).GetAwaiter().GetResult();
+                Program.LoadItemAsync(iID, Program.itemMain, 1).GetAwaiter().GetResult();
 
                 lblRecipeName1.Text = Program.itemMain.itemData.name;
 
@@ -128,7 +151,7 @@ namespace GW2CostAnalysis
                     }
                 }
 
-                Program.PopulateList(Program.itemMain, 1);
+                Program.itemMain.itemPrice = Program.GetPricesAsync(Program.itemMain.itemData.id).GetAwaiter().GetResult();
 
                 if (iID != 46699)
                 {
